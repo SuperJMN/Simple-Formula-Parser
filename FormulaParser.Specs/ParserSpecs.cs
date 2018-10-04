@@ -8,19 +8,25 @@ namespace FormulaParser.Specs
         [Fact]
         public void Simple()
         {
-            AssertParse("(3+4)*12", new ExpressionNode(Operator.Multiply, new ExpressionNode(Operator.Add, 3, 4), (ConstantNode) 12));
+            AssertParse("(3+4)*12", new OperatorNode(Operator.Multiply, new OperatorNode(Operator.Add, 3, 4), (ConstantNode) 12));
         }
 
         [Fact]
         public void SimpleWithOtherPrecedence()
         {
-            AssertParse("3+4*12", new ExpressionNode(Operator.Add, (ConstantNode)3, new ExpressionNode(Operator.Multiply, 4, 12)));
+            AssertParse("3+4*12", new OperatorNode(Operator.Add, (ConstantNode)3, new OperatorNode(Operator.Multiply, 4, 12)));
         }
 
         [Fact]
         public void Call()
         {
             AssertParse("SWAP(3, 5)", new Call("SWAP", (ConstantNode)3, (ConstantNode)5));
+        }
+
+        [Fact]
+        public void Symbols()
+        {
+            AssertParse("7*INDEX", new OperatorNode(Operator.Multiply, (ConstantNode)7, new IdentifierNode("INDEX")));
         }
 
         [Fact]

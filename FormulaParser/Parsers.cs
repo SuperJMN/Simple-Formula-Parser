@@ -17,8 +17,10 @@ namespace FormulaParser
         private static readonly TokenListParser<FormulaToken, Expression> Number = Token.EqualTo(FormulaToken.Number).Apply(Numerics.DecimalDecimal)
             .Select(d => (Expression)new ConstantNode(d));
 
+        private static readonly TokenListParser<FormulaToken, Expression> IdentifierNode = Identifier.Select(s => (Expression)new IdentifierNode(s));
+
         private static readonly TokenListParser<FormulaToken, Expression> Literal =
-            Number;
+            Number.Or(IdentifierNode);
 
         private static readonly TokenListParser<FormulaToken, Expression> FunctionCall =
             from name in Identifier
@@ -44,7 +46,7 @@ namespace FormulaParser
 
         private static Expression MakeBinary(Operator operatorName, Expression leftOperand, Expression rightOperand)
         {
-            return new ExpressionNode(operatorName, leftOperand, rightOperand);
+            return new OperatorNode(operatorName, leftOperand, rightOperand);
         }
     }
 }
