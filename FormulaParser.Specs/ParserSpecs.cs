@@ -1,4 +1,5 @@
 using DeepEqual.Syntax;
+using FormulaParser.Complete;
 using Xunit;
 
 namespace FormulaParser.Specs
@@ -20,7 +21,7 @@ namespace FormulaParser.Specs
         [Fact]
         public void Call()
         {
-            AssertParse("SWAP(3, 5)", new Call("SWAP", (ConstantNode)3, (ConstantNode)5));
+            AssertParse("SWAP(3;5)", new Call("SWAP", (ConstantNode)3, (ConstantNode)5));
         }
 
         [Fact]
@@ -32,13 +33,13 @@ namespace FormulaParser.Specs
         [Fact]
         public void NestedCall()
         {
-            AssertParse("SWAP(3, AVG(3,4,5,6))", new Call("SWAP", (ConstantNode)3, new Call("AVG", (ConstantNode)3, (ConstantNode)4, (ConstantNode)5, (ConstantNode)6)));
+            AssertParse("SWAP(3;AVG(3;4;5;6))", new Call("SWAP", (ConstantNode)3, new Call("AVG", (ConstantNode)3, (ConstantNode)4, (ConstantNode)5, (ConstantNode)6)));
         }
 
         private static void AssertParse(string input, Expression expectation)
         {
             var source = input;
-            var parser = new FormulaParser();
+            var parser = new FullParser();
             var expr = parser.Parse(source);
             var expected = expectation;
 

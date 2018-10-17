@@ -1,10 +1,9 @@
 ﻿using Superpower;
-using Superpower.Model;
 using Superpower.Parsers;
 
-namespace FormulaParser
+namespace FormulaParser.Complete
 {
-    public static class Parsers
+    public static class FullParserDefinitions
     {
         private static readonly TokenListParser<FormulaToken, string> Identifier =
             Token.EqualTo(FormulaToken.Identifier).Select(token => token.ToStringValue());
@@ -42,7 +41,7 @@ namespace FormulaParser
         public static readonly TokenListParser<FormulaToken, Expression> Expression = Comparand;
 
         private static readonly TokenListParser<FormulaToken, Expression[]> Parameters =
-            Expression.ManyDelimitedBy(Token.EqualTo(FormulaToken.Comma));
+            Expression.ManyDelimitedBy(Token.EqualTo(FormulaToken.Semicolon));
 
         private static Expression MakeBinary(Operator operatorName, Expression leftOperand, Expression rightOperand)
         {

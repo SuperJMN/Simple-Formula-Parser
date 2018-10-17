@@ -1,4 +1,6 @@
-﻿using Superpower;
+﻿using DeepEqual.Syntax;
+using FormulaParser.Complete;
+using Superpower;
 using Xunit;
 
 namespace FormulaParser.Specs
@@ -9,7 +11,7 @@ namespace FormulaParser.Specs
         public void TermTest()
         {
             var tokenList = Tokenizer.Create().Tokenize("3+HOLA");
-            var p = Parsers.Expression.Parse(tokenList);
-        }
+            var p = FullParserDefinitions.Expression.Parse(tokenList);
+        }       
     }
 }

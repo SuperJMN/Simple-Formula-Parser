@@ -1,19 +1,19 @@
 ﻿using Superpower;
 
-namespace FormulaParser
+namespace FormulaParser.Complete
 {
-    public class FormulaParser
+    public class FullParser
     {
         private readonly Tokenizer<FormulaToken> tokenizer;
 
-        public FormulaParser()
+        public FullParser()
         {
             tokenizer = Tokenizer.Create();
         }
 
         public Expression Parse(string input)
         {            
-            return Parsers.Expression.Parse(tokenizer.Tokenize(input));
+            return FullParserDefinitions.Expression.Parse(tokenizer.Tokenize(input));
         }
     }
 }

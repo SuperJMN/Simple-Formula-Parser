@@ -19,6 +19,7 @@ namespace FormulaParser
                 .Match(Character.EqualTo(','), FormulaToken.Comma)
                 .Match(Character.EqualTo('('), FormulaToken.LeftParenthesis)
                 .Match(Character.EqualTo(')'), FormulaToken.RightParenthesis)
+                .Match(Character.EqualTo(';'), FormulaToken.Semicolon)
                 .Match(Span.Regex(@"\d*"), FormulaToken.Number, true)
                 .Match(Span.Regex(@"\w[\w\d]*"), FormulaToken.Identifier, true)
                 .Build();

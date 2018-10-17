@@ -12,6 +12,7 @@ namespace FormulaParser
         Plus,
         Number,
         Identifier,
-        Comma
+        Comma,
+        Semicolon
     }
 }
