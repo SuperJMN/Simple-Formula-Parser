@@ -13,7 +13,7 @@ namespace FormulaParser.Expressions
 
         public Expression Parse(string input)
         {            
-            return SimpleExpressionParserDefinitions.Expression.Parse(tokenizer.Tokenize(input));
+            return SimpleExpressionParserDefinitions.Parser.Parse(tokenizer.Tokenize(input));
         }
     }
 }

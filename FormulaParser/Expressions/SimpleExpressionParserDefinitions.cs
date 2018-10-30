@@ -35,6 +35,8 @@ namespace FormulaParser.Expressions
 
         public static readonly TokenListParser<FormulaToken, Expression> Expression = Comparand;
 
+        public static readonly TokenListParser<FormulaToken, Expression> Parser = Expression.AtEnd();
+
         private static Expression MakeBinary(Operator operatorName, Expression leftOperand, Expression rightOperand)
         {
             return new OperatorNode(operatorName, leftOperand, rightOperand);
