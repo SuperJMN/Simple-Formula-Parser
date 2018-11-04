@@ -12,8 +12,9 @@ namespace FormulaParser.Semicomplete
         }
 
         public Expression Parse(string input)
-        {            
-            return SemiFullParserDefinitions.Parser.Parse(tokenizer.Tokenize(input));
+        {
+            var tokenList = tokenizer.Tokenize(input);
+            return SemiFullParserDefinitions.Parser.Parse(tokenList);
         }
     }
 }

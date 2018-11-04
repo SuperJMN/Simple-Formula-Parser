@@ -1,4 +1,5 @@
-﻿using Superpower;
+﻿using System.Text.RegularExpressions;
+using Superpower;
 using Superpower.Parsers;
 using Superpower.Tokenizers;
 
@@ -8,8 +9,6 @@ namespace FormulaParser
     {
         public static Tokenizer<FormulaToken> Create()
         {
-            var stringParser = Span.Regex("[\\w\\s]*").Between(Character.EqualTo('"'), Character.EqualTo('"'));
-
             var tokenizer = new TokenizerBuilder<FormulaToken>()
                 .Ignore(Span.WhiteSpace)
                 .Match(Character.EqualTo('-'), FormulaToken.Minus)
@@ -20,8 +19,8 @@ namespace FormulaParser
                 .Match(Character.EqualTo('('), FormulaToken.LeftParenthesis)
                 .Match(Character.EqualTo(')'), FormulaToken.RightParenthesis)
                 .Match(Character.EqualTo(';'), FormulaToken.Semicolon)
-                .Match(Span.Regex(@"\d*"), FormulaToken.Number, true)
-                .Match(Span.Regex(@"\w[\w\d]*"), FormulaToken.Identifier, true)
+                .Match(Span.Regex(@"^-?\d+(,\d+)*(\.\d+(e\d+)?)?"), FormulaToken.Number, true)
+                .Match(Span.Regex(@"\w[\w\d\s\._áéíóúñÁÉÍÓÚÑ]*"), FormulaToken.Identifier, true)
                 .Build();
 
             return tokenizer;

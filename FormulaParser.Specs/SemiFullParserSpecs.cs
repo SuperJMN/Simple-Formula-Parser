@@ -75,6 +75,14 @@ namespace FormulaParser.Specs
             AssertThrows<ParseException>("5+SUM(1)");
         }
 
+        [Fact]
+        public void TwoFormulas()
+        {
+            Expression one = new IdentifierNode("Consumo de gas");
+            Expression two = new OperatorNode(Operator.Add, new IdentifierNode("Consumo de gas"), new IdentifierNode("ME_USO_1.09"));
+            AssertParse("TWOFORMULAS(Consumo de gas; ME_USO_1.09 +50)", new Call("TWOFORMULAS", one, two));
+        }
+
         private static void AssertThrows<TEx>(string source) where TEx: Exception
         {
             var parser = new SemiFullParser();
