@@ -16,7 +16,7 @@ namespace FormulaParser.Semicomplete
         private static readonly TokenListParser<FormulaToken, Expression> Number = Token.EqualTo(FormulaToken.Number).Apply(Numerics.DecimalDecimal)
             .Select(d => (Expression)new ConstantNode(d));
 
-        private static readonly TokenListParser<FormulaToken, Expression> IdentifierNode = Identifier.Select(s => (Expression)new IdentifierNode(s));
+        private static readonly TokenListParser<FormulaToken, Expression> IdentifierNode = Identifier.Select(s => (Expression)new IdentifierNode(s.Trim()));
 
         private static readonly TokenListParser<FormulaToken, Expression> Literal =
             Number.Or(IdentifierNode);

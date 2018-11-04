@@ -79,7 +79,7 @@ namespace FormulaParser.Specs
         public void TwoFormulas()
         {
             Expression one = new IdentifierNode("Consumo de gas");
-            Expression two = new OperatorNode(Operator.Add, new IdentifierNode("Consumo de gas"), new IdentifierNode("ME_USO_1.09"));
+            Expression two = new OperatorNode(Operator.Add, new IdentifierNode("ME_USO_1.09"), new ConstantNode(50));
             AssertParse("TWOFORMULAS(Consumo de gas; ME_USO_1.09 +50)", new Call("TWOFORMULAS", one, two));
         }
 
