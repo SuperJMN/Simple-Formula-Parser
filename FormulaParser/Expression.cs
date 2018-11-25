@@ -7,9 +7,9 @@
 
     public interface IExpressionVisitor
     {
-        void Visit(IdentifierNode identifierNode);
+        void Visit(IdentifierNode node);
         void Visit(OperatorNode node);
-        void Visit(Call identifierNode);
-        void Visit(ConstantNode identifierNode);
+        void Visit(Call node);
+        void Visit(ConstantNode node);
     }
 }

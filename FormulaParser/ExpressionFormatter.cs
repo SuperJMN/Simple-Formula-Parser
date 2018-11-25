@@ -8,17 +8,17 @@ namespace FormulaParser
     {
         readonly StringBuilder strBuilder = new StringBuilder();
 
-        public void Visit(Call call)
+        public void Visit(Call node)
         {
-            strBuilder.Append(call.Name);
+            strBuilder.Append(node.Name);
             strBuilder.Append("(");
 
             int t = 1;
-            foreach (var callParameter in call.Parameters)
+            foreach (var callParameter in node.Parameters)
             {
                 callParameter.Accept(this);
 
-                if (t < call.Parameters.Length)
+                if (t < node.Parameters.Length)
                 {
                     strBuilder.Append(";");
                 }
@@ -28,22 +28,22 @@ namespace FormulaParser
             strBuilder.Append(")");
         }
 
-        public void Visit(ConstantNode call)
+        public void Visit(ConstantNode node)
         {
-            var value = call.Value.ToString(CultureInfo.InvariantCulture);
+            var value = node.Value.ToString(CultureInfo.InvariantCulture);
             strBuilder.Append(value);
         }
 
-        public void Visit(IdentifierNode call)
+        public void Visit(IdentifierNode node)
         {
-            strBuilder.Append(call.Identifier);
+            strBuilder.Append(node.Identifier);
         }
 
         public void Visit(OperatorNode node)
         {
             if (node.Operands.Length != 2)
             {
-                throw new InvalidOperationException("Solamente se pueden procesar operandos binarios");
+                throw new InvalidOperationException("Can only process binary operators");
             }
 
             var left = node.Operands[0];
