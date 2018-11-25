@@ -17,7 +17,7 @@ namespace FormulaParser.Specs
         [Fact]
         public void CallOfExpression()
         {
-            AssertParse("SUM(3+4)", new Call("SUM", new OperatorNode(Operator.Add, new ConstantNode(3), new ConstantNode(4))));
+            AssertParse("SUM(3+4)", new Call("SUM", new OperatorNode(Operators.Add, new ConstantNode(3), new ConstantNode(4))));
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace FormulaParser.Specs
         {
             AssertParse("SUM(A;AVG(3+2;5))",
                 new Call("SUM", new IdentifierNode("A"),
-                    new Call("AVG", new OperatorNode(Operator.Add, new ConstantNode(3), new ConstantNode(2)), new ConstantNode(5))));
+                    new Call("AVG", new OperatorNode(Operators.Add, new ConstantNode(3), new ConstantNode(2)), new ConstantNode(5))));
         }
 
         [Fact]
@@ -49,8 +49,8 @@ namespace FormulaParser.Specs
             var two= $"SUM({one})";
             var three = $"SUM(AB;123+3)";
 
-            Expression nodeTree = new Call("SUM", new IdentifierNode("AB"), new OperatorNode(Operator.Add, new ConstantNode(123), new ConstantNode(3)));
-            Expression[] nodeOne = { new Call("AVG", new IdentifierNode("a"), new IdentifierNode("b"), new OperatorNode(Operator.Add, new ConstantNode(3), new ConstantNode(4)))};
+            Expression nodeTree = new Call("SUM", new IdentifierNode("AB"), new OperatorNode(Operators.Add, new ConstantNode(123), new ConstantNode(3)));
+            Expression[] nodeOne = { new Call("AVG", new IdentifierNode("a"), new IdentifierNode("b"), new OperatorNode(Operators.Add, new ConstantNode(3), new ConstantNode(4)))};
             Expression[] nodeTwo = { new Call("SUM", nodeOne), };
             var root = new Call("SUM", nodeTree, new Call("AVG", nodeTwo));
             var result = $"SUM({three};AVG({two}))"; 
@@ -79,7 +79,7 @@ namespace FormulaParser.Specs
         public void TwoFormulas()
         {
             Expression one = new IdentifierNode("Consumo de gas");
-            Expression two = new OperatorNode(Operator.Add, new IdentifierNode("ME_USO_1.09"), new ConstantNode(50));
+            Expression two = new OperatorNode(Operators.Add, new IdentifierNode("ME_USO_1.09"), new ConstantNode(50));
             AssertParse("TWOFORMULAS(Consumo de gas; ME_USO_1.09 +50)", new Call("TWOFORMULAS", one, two));
         }
 

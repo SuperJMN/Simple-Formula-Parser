@@ -24,6 +24,11 @@ namespace FormulaParser
         public static implicit operator ConstantNode(decimal de)
         {
             return new ConstantNode(de);
-        }      
+        }
+
+        public override void Accept(IExpressionVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

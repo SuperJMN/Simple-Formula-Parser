@@ -1,10 +1,16 @@
 ﻿namespace FormulaParser
 {
-    public enum Operator
+    public class Operator
     {
-        Add,
-        Subtract,
-        Multiply,
-        Divide
+        public OperatorKind Kind { get; }
+        public string Symbol { get; }
+        public int Precedence { get; }
+
+        public Operator(OperatorKind kind, string symbol, int precedence)
+        {
+            Kind = kind;
+            Symbol = symbol;
+            Precedence = precedence;
+        }
     }
 }

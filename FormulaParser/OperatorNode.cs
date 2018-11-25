@@ -31,5 +31,10 @@ namespace FormulaParser
             Operator = op;
             Operands = operands.Select(x => (ConstantNode)x).Cast<Expression>().ToArray();
         }
+
+        public override void Accept(IExpressionVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }
