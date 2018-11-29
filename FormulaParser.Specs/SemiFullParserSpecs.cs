@@ -83,6 +83,12 @@ namespace FormulaParser.Specs
             AssertParse("TWOFORMULAS(Consumo de gas; ME_USO_1.09 +50)", new Call("TWOFORMULAS", one, two));
         }
 
+        [Fact]
+        public void Logic()
+        {
+            AssertParse("4 > 3", new OperatorNode(Operators.Gt, 4, 3));
+        }
+
         private static void AssertThrows<TEx>(string source) where TEx: Exception
         {
             var parser = new SemiFullParser();

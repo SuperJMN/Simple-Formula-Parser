@@ -13,6 +13,13 @@ namespace FormulaParser.Semicomplete
         private static readonly TokenListParser<FormulaToken, Operator> Multiply = Token.EqualTo(FormulaToken.Asterisk).Value(Operators.Multiply);
         private static readonly TokenListParser<FormulaToken, Operator> Divide = Token.EqualTo(FormulaToken.Slash).Value(Operators.Divide);
 
+        private static readonly TokenListParser<FormulaToken, Operator> Eq = Token.EqualTo(FormulaToken.Equal).Value(Operators.Eq);
+        private static readonly TokenListParser<FormulaToken, Operator> Neq = Token.EqualTo(FormulaToken.NotEqual).Value(Operators.Neq);
+        public static readonly TokenListParser<FormulaToken, Operator> Gt = Token.EqualTo(FormulaToken.Greater).Value(Operators.Gt);
+        private static readonly TokenListParser<FormulaToken, Operator> Lt = Token.EqualTo(FormulaToken.Less).Value(Operators.Lt);
+        private static readonly TokenListParser<FormulaToken, Operator> LtEq = Token.EqualTo(FormulaToken.LessEqual).Value(Operators.LtEq);
+        private static readonly TokenListParser<FormulaToken, Operator> GtEq = Token.EqualTo(FormulaToken.GreaterEqual).Value(Operators.GtEq);
+
         private static readonly TokenListParser<FormulaToken, Expression> Number = Token.EqualTo(FormulaToken.Number).Apply(Numerics.DecimalDecimal)
             .Select(d => (Expression)new ConstantNode(d));
 
@@ -38,7 +45,9 @@ namespace FormulaParser.Semicomplete
 
         private static readonly TokenListParser<FormulaToken, Expression> Comparand = Parse.Chain(Add.Or(Subtract), Term, MakeBinary);
 
-        public static readonly TokenListParser<FormulaToken, Expression> Expression = Comparand;
+        private static readonly TokenListParser<FormulaToken, Expression> Comparison = Parse.Chain(Eq.Or(Neq).Or(Gt).Or(Lt).Or(LtEq).Or(GtEq), Comparand, MakeBinary);
+
+        public static readonly TokenListParser<FormulaToken, Expression> Expression = Comparison;
 
         public static readonly TokenListParser<FormulaToken, Expression> Parameter = FunctionCall.Try().Or(Expression);
 

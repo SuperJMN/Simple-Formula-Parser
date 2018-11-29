@@ -10,14 +10,24 @@ namespace FormulaParser
         {
             var tokenizer = new TokenizerBuilder<FormulaToken>()
                 .Ignore(Span.WhiteSpace)
+
+                .Match(Character.EqualTo('='), FormulaToken.Equal)
+                .Match(Span.EqualTo("<>"), FormulaToken.NotEqual)
+                .Match(Span.EqualTo(">="), FormulaToken.GreaterEqual)
+                .Match(Span.EqualTo("<="), FormulaToken.LessEqual)
+                .Match(Character.EqualTo('>'), FormulaToken.Greater)
+                .Match(Character.EqualTo('<'), FormulaToken.Less)
+
                 .Match(Character.EqualTo('-'), FormulaToken.Minus)
                 .Match(Character.EqualTo('+'), FormulaToken.Plus)
                 .Match(Character.EqualTo('*'), FormulaToken.Asterisk)
                 .Match(Character.EqualTo('/'), FormulaToken.Slash)
                 .Match(Character.EqualTo(','), FormulaToken.Comma)
+
                 .Match(Character.EqualTo('('), FormulaToken.LeftParenthesis)
                 .Match(Character.EqualTo(')'), FormulaToken.RightParenthesis)
                 .Match(Character.EqualTo(';'), FormulaToken.Semicolon)
+
                 .Match(Span.Regex(@"^-?\d+(,\d+)*(\.\d+(e\d+)?)?"), FormulaToken.Number, true)
                 .Match(Span.Regex(@"\w[\w\d\s\._áéíóúñÁÉÍÓÚÑ]*"), FormulaToken.Identifier, true)
                 .Build();

@@ -5,6 +5,12 @@
         Add,
         Subtract,
         Multiply,
-        Divide,                  
+        Divide,
+        GreaterEqual,
+        LessEqual,
+        Less,
+        Greater,
+        NotEqual,
+        Equal
     }
 }

@@ -30,6 +30,17 @@ namespace FormulaParser.Specs
         }
 
         [Fact]
+        public void Logic()
+        {
+            var source = "5 > 4";
+            var sut = Tokenizer.Create();
+            var tokens = sut.Tokenize(source);
+
+            Assert.Equal(new[] {FormulaToken.Number,  FormulaToken.Greater, FormulaToken.Number },
+                tokens.Select(x => x.Kind));
+        }
+
+        [Fact]
         public void DecimalNumber()
         {
             var source = "0.5";

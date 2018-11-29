@@ -13,6 +13,12 @@ namespace FormulaParser
         Number,
         Identifier,
         Comma,
-        Semicolon
+        Semicolon,
+        Less,
+        Greater,
+        LessEqual,
+        GreaterEqual,
+        NotEqual,
+        Equal
     }
 }
