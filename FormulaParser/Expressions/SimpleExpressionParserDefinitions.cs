@@ -13,13 +13,19 @@ namespace FormulaParser.Expressions
         private static readonly TokenListParser<FormulaToken, Operator> Multiply = Token.EqualTo(FormulaToken.Asterisk).Value(Operators.Multiply);
         private static readonly TokenListParser<FormulaToken, Operator> Divide = Token.EqualTo(FormulaToken.Slash).Value(Operators.Divide);
 
+
         private static readonly TokenListParser<FormulaToken, Expression> Number = Token.EqualTo(FormulaToken.Number).Apply(Numerics.DecimalDecimal)
             .Select(d => (Expression)new ConstantNode(d));
+
+        private static readonly TokenListParser<FormulaToken, Expression> NegativeNumber =
+            from minus in Subtract
+            from number in Token.EqualTo(FormulaToken.Number).Apply(Numerics.DecimalDecimal)
+            select (Expression) new ConstantNode(-number);
 
         private static readonly TokenListParser<FormulaToken, Expression> IdentifierNode = Identifier.Select(s => (Expression)new IdentifierNode(s));
 
         private static readonly TokenListParser<FormulaToken, Expression> Literal =
-            Number.Or(IdentifierNode);
+            NegativeNumber.Or(Number).Or(IdentifierNode);
 
         private static readonly TokenListParser<FormulaToken, Expression> Item = Literal;
 

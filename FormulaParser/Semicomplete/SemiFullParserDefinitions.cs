@@ -23,17 +23,22 @@ namespace FormulaParser.Semicomplete
         private static readonly TokenListParser<FormulaToken, Expression> Number = Token.EqualTo(FormulaToken.Number).Apply(Numerics.DecimalDecimal)
             .Select(d => (Expression)new ConstantNode(d));
 
+        private static readonly TokenListParser<FormulaToken, Expression> NegativeNumber =
+            from minus in Subtract
+            from number in Token.EqualTo(FormulaToken.Number).Apply(Numerics.DecimalDecimal)
+            select (Expression) new ConstantNode(-number);
+
         private static readonly TokenListParser<FormulaToken, Expression> IdentifierNode = Identifier.Select(s => (Expression)new IdentifierNode(s.Trim()));
 
         private static readonly TokenListParser<FormulaToken, Expression> Literal =
-            Number.Or(IdentifierNode);
+            NegativeNumber.Or(Number).Or(IdentifierNode);
 
         private static readonly TokenListParser<FormulaToken, Expression> FunctionCall =
             from name in Identifier
             from parameters in Parameters.BetweenParenthesis()
             select (Expression)new Call(name, parameters);
 
-        private static readonly TokenListParser<FormulaToken, Expression> Item = Literal;
+        private static readonly TokenListParser<FormulaToken, Expression> Item = FunctionCall.Try().Or(Literal);
 
         private static readonly TokenListParser<FormulaToken, Expression> Factor =
             Parse.Ref(() => Expression).BetweenParenthesis()
@@ -49,12 +54,12 @@ namespace FormulaParser.Semicomplete
 
         public static readonly TokenListParser<FormulaToken, Expression> Expression = Comparison;
 
-        public static readonly TokenListParser<FormulaToken, Expression> Parameter = FunctionCall.Try().Or(Expression);
+        public static readonly TokenListParser<FormulaToken, Expression> Parameter = Expression;
 
         private static readonly TokenListParser<FormulaToken, Expression[]> Parameters =
             Parameter.ManyDelimitedBy(Token.EqualTo(FormulaToken.Semicolon));
 
-        public static readonly TokenListParser<FormulaToken, Expression> Parser = FunctionCall.AtEnd();            
+        public static readonly TokenListParser<FormulaToken, Expression> Parser = Parameter.AtEnd();            
 
         private static Expression MakeBinary(Operator operatorName, Expression leftOperand, Expression rightOperand)
         {

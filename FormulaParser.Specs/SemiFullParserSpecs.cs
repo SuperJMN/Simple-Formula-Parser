@@ -43,6 +43,12 @@ namespace FormulaParser.Specs
         }
 
         [Fact]
+        public void ComplexCall()
+        {
+            AssertParse("IF( IF(A;B;C) > SUM(1) ; 8 * ME_USO_1.10.2; TEST JMN)", null);
+        }
+       
+        [Fact]
         public void ComplexNestedCalls()
         {
             var one = "AVG(a;b;3+4)";
@@ -60,19 +66,15 @@ namespace FormulaParser.Specs
         [Fact]
         public void MixedExpressionAndCallTest()
         {
-            AssertThrows<ParseException>("SUM(3+4)+5");
+            AssertParse("SUM(3+4)+5", new OperatorNode(Operators.Add, new Call("SUM", new OperatorNode(Operators.Add, 3, 4)), new ConstantNode(5)));
         }
 
         [Fact]
         public void Expression()
         {
-            AssertThrows<ParseException>("5+4/INDEX");
-        }
-
-        [Fact]
-        public void OppositeMixedCallTest()
-        {
-            AssertThrows<ParseException>("5+SUM(1)");
+            AssertParse("5+4/INDEX",
+                new OperatorNode(Operators.Add, new ConstantNode(5),
+                    new OperatorNode(Operators.Divide, new ConstantNode(4), new IdentifierNode("INDEX"))));
         }
 
         [Fact]
@@ -87,6 +89,12 @@ namespace FormulaParser.Specs
         public void Logic()
         {
             AssertParse("4 > 3", new OperatorNode(Operators.Gt, 4, 3));
+        }
+
+        [Fact]
+        public void If()
+        {
+            AssertParse("IF(4 > 3; SUMA(A;B); RESTA(4+2; 5)) ", null);
         }
 
         private static void AssertThrows<TEx>(string source) where TEx: Exception
