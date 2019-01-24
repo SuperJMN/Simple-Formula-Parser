@@ -97,6 +97,12 @@ namespace FormulaParser.Specs
             AssertParse("IF(4 > 3; SUMA(A;B); RESTA(4+2; 5)) ", null);
         }
 
+        [Fact]
+        public void WithMinus()
+        {
+            AssertParse("M_AVG(FAASSC;1;1;-1;MES)", null);
+        }
+
         private static void AssertThrows<TEx>(string source) where TEx: Exception
         {
             var parser = new SemiFullParser();
